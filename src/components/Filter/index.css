@@ -1,0 +1,10 @@
+.Fcard {
+  color: #fff;
+}
+.profilebg {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  height: 100px;
+  width: 100px;
+  padding: 20px;
+  text-align: center;
+}

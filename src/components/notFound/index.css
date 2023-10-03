@@ -1,0 +1,10 @@
+.not {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  background-color: #000000;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

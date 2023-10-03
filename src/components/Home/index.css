@@ -1,0 +1,28 @@
+.homebg {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/home-lg-bg.png');
+  height: 100vh;
+  background-size: cover;
+}
+.Homebg {
+  width: 400px;
+  height: 400px;
+  margin: 10px;
+  color: #ffffff;
+}
+.p {
+  font-size: large;
+}
+.findjob {
+  background-color: #4f46e5;
+  height: 30px;
+  padding: 5px;
+  width: 100px;
+  border: none;
+  color: #ffffff;
+  border-radius: 6px;
+}
+@media (max-width: 576px) {
+  .homebg {
+    background-image: url('https://assets.ccbp.in/frontend/react-js/home-sm-bg.png');
+  }
+}
