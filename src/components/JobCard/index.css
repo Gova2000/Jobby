@@ -1,4 +1,38 @@
-.card {
+.maincard {
   background-color: #202020;
+  border-radius: 8px;
+  background-size: cover;
+
+  width: 70%;
   color: #fff;
+  margin-bottom: 10px;
+  padding: 15px;
+}
+.card {
+  color: #fff;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+}
+.logo {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+}
+
+h1 {
+  margin: 0px;
+  font-size: larger;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.row1 {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-left: 10px;
 }

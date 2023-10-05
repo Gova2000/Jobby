@@ -71,17 +71,17 @@ class Jobs extends Component {
     const api =
       'https://apis.ccbp.in/jobs?employment_type=FULLTIME&minimum_package=1000000&search='
     const options = {
-      method: 'POST',
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
     }
 
-    const data = await fetch(api, options)
-    console.log(data)
+    const data = await fetch(Api, options)
+
     if (data.ok === true) {
       const response = await data.json()
-      console.log(response)
+
       const formated = response.jobs.map(each => ({
         CompanyLogo: each.company_logo_url,
         EmploymentType: each.employment_type,
@@ -118,7 +118,7 @@ class Jobs extends Component {
     return (
       <div className="JCard-bg">
         <Header />
-        <div>
+        <div className="JFC">
           <Filter
             TypesList={employmentTypesList}
             salaryList={salaryRangesList}
@@ -128,14 +128,13 @@ class Jobs extends Component {
             username={username}
             password={password}
           />
-          <div>
+
+          <ul>
             <h1>Jobs</h1>
-            <ul>
-              {List.map(each => (
-                <JobCard Details={each} key={each.id} />
-              ))}
-            </ul>
-          </div>
+            {List.map(each => (
+              <JobCard Details={each} key={each.Id} />
+            ))}
+          </ul>
         </div>
       </div>
     )

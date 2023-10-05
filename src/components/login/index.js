@@ -5,7 +5,7 @@ import {Component} from 'react'
 import './index.css'
 
 class Login extends Component {
-  state = {username: '', password: ''}
+  state = {username: '', password: '', toggle: false, error: ''}
 
   username = event => {
     this.setState({username: event.target.value})
@@ -15,20 +15,22 @@ class Login extends Component {
     this.setState({password: event.target.value})
   }
 
-  log = jwtToken => {
+  Success = jwtToken => {
     const {history} = this.props
-    const {username, password} = this.state
-    if (username !== '' && password !== '') {
-      Cookies.set('jwt_token', jwtToken, {expires: 30})
-      history.replace('/')
-    } else {
-      this.setState({toggle: true})
-    }
+
+    Cookies.set('jwt_token', jwtToken, {expires: 30, path: '/'})
+    history.replace('/')
   }
 
-  fetch = async () => {
+  onFailure = error => {
+    this.setState({toggle: true, error})
+  }
+
+  fetch = async event => {
+    event.preventDefault()
     const {username, password} = this.state
     const userdetails = {username, password}
+    console.log(username)
 
     const Api = 'https://apis.ccbp.in/login'
     const options = {
@@ -39,12 +41,14 @@ class Login extends Component {
     const Urlfetch = await fetch(Api, options)
     const data = await Urlfetch.json()
     if (Urlfetch.ok === true) {
-      this.log(data.jwtToken)
+      this.Success(data.jwt_token)
+    } else {
+      this.onFailure(data.error_msg)
     }
   }
 
   login = () => {
-    const {username, password, toggle} = this.state
+    const {username, password, toggle, error} = this.state
     return (
       <div className="login-mianbg">
         <div className="login-bg">
@@ -53,7 +57,7 @@ class Login extends Component {
             alt="website logo"
             className="login-logo"
           />
-          <div className="login-block">
+          <form className="login-block" onSubmit={this.fetch}>
             <label htmlFor="name">USERNAME</label>
             <div className="user">
               <input
@@ -75,13 +79,13 @@ class Login extends Component {
                 placeholder="Password"
               />
             </div>
-            <button type="button" className="login-btn" onClick={this.log}>
+            <button type="submit" className="login-btn">
               Login
             </button>
             {toggle && (
-              <p className="erroemsg">*Username and Password didn't matched</p>
+              <p className="errormsg">*Username and Password didn't match</p>
             )}
-          </div>
+          </form>
         </div>
       </div>
     )

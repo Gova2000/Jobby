@@ -1,5 +1,7 @@
 .Fcard {
   color: #fff;
+  margin-top: 3vh;
+  margin-left: 5vh;
 }
 .profilebg {
   background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
@@ -7,4 +9,9 @@
   width: 100px;
   padding: 20px;
   text-align: center;
+  color: black;
+  width: 220px;
+  height: 150px;
+  border-radius: 10px;
+  margin-bottom: 2vh;
 }

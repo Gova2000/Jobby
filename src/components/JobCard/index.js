@@ -2,7 +2,7 @@ import './index.css'
 
 const JobCard = props => {
   const {Details} = props
-  console.log(Details)
+
   const {
     CompanyLogo,
     EmploymentType,
@@ -15,9 +15,9 @@ const JobCard = props => {
   } = Details
 
   return (
-    <div>
+    <div className="maincard">
       <div className="card">
-        <img src={CompanyLogo} alt={Title} />
+        <img src={CompanyLogo} alt={Title} className="logo" />
         <div>
           <h1>{Title}</h1>
           <div>
@@ -25,18 +25,21 @@ const JobCard = props => {
           </div>
         </div>
       </div>
-      <div>
-        <div>
-          <p>{Location}</p>
+      <div className="row">
+        <div className="row">
+          <div className="row1">
+            <p>{Location}</p>
+          </div>
+          <div className="row1">
+            <p>{EmploymentType}</p>
+          </div>
         </div>
-        <div>
-          <p>{EmploymentType}</p>
-        </div>
+
         <div>
           <p>{Package}</p>
         </div>
       </div>
-
+      <hr />
       <div>
         <h1>Description</h1>
         <p>{JobDescripton}</p>

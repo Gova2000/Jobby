@@ -1,4 +1,11 @@
 .JCard-bg {
   background-color: #000000;
-  height: 100vh;
+  height: 100%;
+  padding: 10px;
+  color: #fff;
+}
+.JFC {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
