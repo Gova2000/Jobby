@@ -23,14 +23,14 @@ const Header = props => {
         />
       </Link>
       <div className="hide">
-        <div className="row ">
+        <ul className="row ">
           <Link to="/" className="link">
-            <p>Home</p>
+            <li>Home</li>
           </Link>
           <Link to="/jobs" className="link">
-            <p>Jobs</p>
+            <li>Jobs</li>
           </Link>
-        </div>
+        </ul>
       </div>
 
       <button type="button" onClick={onClickLogout} className="hide logbtn">
@@ -38,14 +38,18 @@ const Header = props => {
       </button>
 
       <div className="row11">
-        <div className="row">
+        <ul className="row">
           <Link to="/">
-            <AiFillHome size="36" className="logutbtn link" />
+            <li>
+              <AiFillHome size="36" className="logutbtn link" />
+            </li>
           </Link>
           <Link to="/jobs">
-            <GiSuitcase size="36" className="logutbtn link" />
+            <li>
+              <GiSuitcase size="36" className="logutbtn link" />
+            </li>
           </Link>
-        </div>
+        </ul>
         <button type="button" className="logutbtn" onClick={onClickLogout}>
           <FiLogOut size="36" />
         </button>

@@ -1,5 +1,6 @@
 import {Component} from 'react'
-
+import {FiSearch} from 'react-icons/fi'
+import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 
 import JobCard from '../JobCard'
@@ -9,6 +10,7 @@ import Header from '../Header'
 import Filter from '../Filter'
 
 import './index.css'
+import Failview from '../failureView'
 
 const employmentTypesList = [
   {
@@ -48,15 +50,25 @@ const salaryRangesList = [
   },
 ]
 
+const LoadConst = {
+  initial: 'INITIAL',
+  progress: 'PROGRESS',
+  success: 'SUCCESS',
+
+  failure: 'FAILURE',
+}
+
 class Jobs extends Component {
   state = {
-    eptype: '',
-    jobpackage: '',
+    eptype: [],
+    jobpackage: [],
     title: '',
     List: [],
-
-    username: '',
-    password: '',
+    profile: {},
+    listfetch: false,
+    profileStatus: false,
+    load: false,
+    Status: LoadConst.initial,
   }
 
   componentDidMount() {
@@ -64,12 +76,12 @@ class Jobs extends Component {
   }
 
   Fetchjob = async () => {
+    this.setState({Status: LoadConst.progress})
     const {eptype, jobpackage, title, List} = this.state
 
     const jwtToken = Cookies.get('jwt_token')
     const Api = `https://apis.ccbp.in/jobs?employment_type=${eptype}&minimum_package=${jobpackage}&search=${title}`
-    const api =
-      'https://apis.ccbp.in/jobs?employment_type=FULLTIME&minimum_package=1000000&search='
+
     const options = {
       method: 'GET',
       headers: {
@@ -92,56 +104,143 @@ class Jobs extends Component {
         Rating: each.rating,
         Title: each.title,
       }))
-      this.setState({List: formated})
+      this.setState({List: formated, load: true, Status: LoadConst.success})
+    } else {
+      this.setState({listfetch: true, Status: LoadConst.failure})
+    }
+
+    const profileFetch = await fetch('https://apis.ccbp.in/profile', options)
+
+    if (profileFetch.ok) {
+      const profileJson = await profileFetch.json()
+      console.log(profileJson.profile_details.profile_image_url)
+      const profor = {
+        Image: profileJson.profile_details.profile_image_url,
+        name: profileJson.profile_details.name,
+        Bio: profileJson.profile_details.short_bio,
+      }
+      this.setState({profile: profor})
+    } else {
+      this.setState({profileStatus: true})
     }
   }
 
   type = type => {
-    this.setState({eptype: type}, this.Fetchjob)
+    const {eptype} = this.state
+
+    if (eptype.includes(type)) {
+      const filt = eptype.filter(each => each !== type)
+    } else {
+      this.setState(prev => ({eptype: [...prev.eptype, type]}), this.Fetchjob)
+    }
   }
 
   package = pack => {
-    this.setState({package: pack}, this.Fetchjob)
+    const {jobpackage} = this.state
+
+    if (jobpackage.includes(pack)) {
+      const filt = jobpackage.filter(each => each !== pack)
+    } else {
+      this.setState(
+        prev => ({jobpackage: [...prev.jobpackage, pack]}),
+        this.Fetchjob,
+      )
+    }
   }
 
-  search = title => {
-    this.setState({title})
+  INPUT = event => {
+    this.setState({title: event.target.value})
   }
 
-  getsearch = () => {
+  Ser = () => {
     this.Fetchjob()
   }
 
   ListSuccess = () => {
-    const {List, username, password} = this.state
+    const {List, profile, load, listfetch, profileStatus} = this.state
 
     return (
       <div className="JCard-bg">
         <Header />
+        <div className="inp1">
+          <div className="inputrow1 ">
+            <input
+              className="input1"
+              type="search"
+              placeholder="search"
+              onChange={this.INPUT}
+            />
+
+            <hr className="hr" />
+            <div className="icon1">
+              <FiSearch onClick={this.Ser} data-testid="searchButton" />
+            </div>
+          </div>
+        </div>
         <div className="JFC">
           <Filter
             TypesList={employmentTypesList}
             salaryList={salaryRangesList}
             pakage={this.package}
-            search={this.search}
             type={this.type}
-            username={username}
-            password={password}
+            profile={profile}
+            profileStatus={profileStatus}
+            Ser={this.Ser}
+            load={load}
           />
 
-          <ul>
-            <h1>Jobs</h1>
-            {List.map(each => (
-              <JobCard Details={each} key={each.Id} />
-            ))}
-          </ul>
+          <div>
+            <div className="inp">
+              <div className="inputrow ">
+                <input
+                  className="input1"
+                  type="search"
+                  placeholder="search"
+                  onChange={this.INPUT}
+                />
+
+                <hr className="hr" />
+                <div className="icon1">
+                  <FiSearch onClick={this.Ser} />
+                </div>
+              </div>
+            </div>
+
+            {List.length === 0 ? (
+              <Failview Ser={this.Ser} />
+            ) : (
+              <ul>
+                {List.map(each => (
+                  <JobCard Details={each} key={each.Id} />
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     )
   }
 
+  Load1 = () => (
+    <div className="Loading1" data-testid="loader">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
   render() {
-    return <div>{this.ListSuccess()}</div>
+    const {Status} = this.state
+
+    switch (Status) {
+      case LoadConst.success:
+        return this.ListSuccess()
+      case LoadConst.progress:
+        return this.Load1()
+      case LoadConst.failure:
+        return <Failview Ser={this.Ser} />
+
+      default:
+        return null
+    }
   }
 }
 

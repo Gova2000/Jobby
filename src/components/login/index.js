@@ -16,10 +16,14 @@ class Login extends Component {
   }
 
   Success = jwtToken => {
+    const {username, password} = this.state
     const {history} = this.props
-
-    Cookies.set('jwt_token', jwtToken, {expires: 30, path: '/'})
-    history.replace('/')
+    if (username !== '' && password !== '') {
+      Cookies.set('jwt_token', jwtToken, {expires: 30, path: '/'})
+      history.replace('/')
+    } else {
+      this.setState({error: "Username and Password didn't match"})
+    }
   }
 
   onFailure = error => {
@@ -30,7 +34,6 @@ class Login extends Component {
     event.preventDefault()
     const {username, password} = this.state
     const userdetails = {username, password}
-    console.log(username)
 
     const Api = 'https://apis.ccbp.in/login'
     const options = {
@@ -69,21 +72,23 @@ class Login extends Component {
               />
             </div>
 
-            <label htmlFor="name">PASSWORD</label>
+            <label htmlFor="password">PASSWORD</label>
             <div className="user">
               <input
                 type="password"
-                id="name"
+                id="password"
                 value={password}
                 onChange={this.password}
                 placeholder="Password"
               />
             </div>
-            <button type="submit" className="login-btn">
+            <button type="submit" className="login-btn" onClick={this.fetch}>
               Login
             </button>
             {toggle && (
-              <p className="errormsg">*Username and Password didn't match</p>
+              <p className="errormsg">{error}</p>
+
+              //* Username and Password didn't match
             )}
           </form>
         </div>

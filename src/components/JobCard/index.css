@@ -36,3 +36,10 @@ h1 {
   flex-direction: row;
   margin-left: 10px;
 }
+.star {
+  color: yellow;
+}
+
+.fill {
+  color: #ffffff;
+}

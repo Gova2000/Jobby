@@ -9,3 +9,57 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.inputrow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 30px;
+  width: 300px;
+  align-items: center;
+  border: 1px solid #dcdcdc;
+  margin: 10px;
+}
+.inputrow1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 30px;
+  width: 300px;
+  align-items: center;
+  border: 1px solid #dcdcdc;
+  margin: 10px;
+}
+.inp {
+  display: block;
+}
+.inp1 {
+  display: none;
+}
+.hr {
+  height: 30px;
+}
+.input1 {
+  height: 30px;
+}
+.icon1 {
+  width: 50px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.fail1 {
+  align-self: flex-start;
+}
+@media (max-width: 576px) {
+  .JFC {
+    flex-direction: column;
+  }
+  .inp {
+    display: none;
+  }
+  .inp1 {
+    display: block;
+  }
+}

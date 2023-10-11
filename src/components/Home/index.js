@@ -15,7 +15,7 @@ const Home = () => {
       <Header />
 
       <div className="Homebg">
-        <h1>Find The Job That Fits Fits Your Life</h1>
+        <h1>Find The Job That Fits Your Life</h1>
         <p className="p">Millions of people are searching for jobs,salary</p>
         <Link to="/jobs">
           <button type="button" className="findjob">
