@@ -89,7 +89,7 @@ class Similar extends Component {
     const {Skills} = this.state
 
     return Skills.map(each => (
-      <li className="row1">
+      <li className="row1" key={each.name}>
         <img src={each.imageUrl} alt={each.name} className="margin" />
         <p>{each.name}</p>
       </li>
