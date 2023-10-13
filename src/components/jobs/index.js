@@ -177,7 +177,7 @@ class Jobs extends Component {
     return (
       <div className="JCard-bg">
         <Header />
-        {List.length !== 0 ? (
+        {Status !== LoadConst.failure ? (
           <>
             <div className="inp1">
               <div className="inputrow1 ">
@@ -210,44 +210,47 @@ class Jobs extends Component {
                 profileStatus={profileStatus}
                 Ser={this.Ser}
               />
+              {List.length !== 0 ? (
+                <div>
+                  <div className="inp">
+                    <div className="inputrow ">
+                      <input
+                        className="input1"
+                        type="search"
+                        placeholder="search"
+                        onChange={this.INPUT}
+                      />
 
-              <div>
-                <div className="inp">
-                  <div className="inputrow ">
-                    <input
-                      className="input1"
-                      type="search"
-                      placeholder="search"
-                      onChange={this.INPUT}
-                    />
-
-                    <hr className="hr" />
-                    <div className="icon1">
-                      <button
-                        type="button"
-                        onClick={this.Ser}
-                        data-testid="searchButton"
-                      >
-                        <FiSearch />
-                      </button>
+                      <hr className="hr" />
+                      <div className="icon1">
+                        <button
+                          type="button"
+                          onClick={this.Ser}
+                          data-testid="searchButton"
+                        >
+                          <FiSearch />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {List.length === 0 ? (
-                  <Failview Ser={this.ProSer} />
-                ) : (
-                  <ul>
-                    {List.map(each => (
-                      <JobCard Details={each} key={each.Id} />
-                    ))}
-                  </ul>
-                )}
-              </div>
+                  {List.length === 0 ? (
+                    <Failview Ser={this.ProSer} />
+                  ) : (
+                    <ul>
+                      {List.map(each => (
+                        <JobCard Details={each} key={each.Id} />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ) : (
+                <NoJOb Ser={this.Ser} />
+              )}
             </div>
           </>
         ) : (
-          <NoJOb Ser={this.Ser} />
+          <Failview Ser={this.Ser} />
         )}
       </div>
     )
