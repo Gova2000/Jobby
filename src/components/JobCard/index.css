@@ -35,11 +35,14 @@ h1 {
   justify-content: flex-start;
   flex-direction: row;
   margin-left: 10px;
+  align-items: center;
 }
 .star {
   color: yellow;
+  margin-right: 8px;
 }
 
 .fill {
   color: #ffffff;
+  margin-right: 8px;
 }

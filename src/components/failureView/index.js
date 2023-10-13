@@ -3,6 +3,7 @@ import './index.css'
 
 const Failview = props => {
   const {Ser} = props
+
   return (
     <div className="fff">
       <img

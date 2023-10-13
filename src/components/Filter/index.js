@@ -11,16 +11,13 @@ const Filter = props => {
       const {employmentTypeId, label} = each
       const Click1 = () => type(employmentTypeId)
       return (
-        <li
-          key={each.employmentTypeId}
-          onClick={Click1}
-          className="filter-list"
-        >
+        <li key={employmentTypeId} className="filter-list">
           <input
-            type="checkbox"
+            type="checkBox"
             id="label"
             name="Type of Employment"
-            value={each.label}
+            value={label}
+            onChange={Click1}
             className="inp"
           />
           <label htmlFor="label">{label}</label>
@@ -35,15 +32,16 @@ const Filter = props => {
     return salaryList.map(each => {
       const {pakage} = props
       const {salaryRangeId, label} = each
-      const Click = () => pakage(each.salaryRangeId)
+      const Click = () => pakage(salaryRangeId)
 
       return (
-        <li key={salaryRangeId} onClick={Click} className="filter-list">
+        <li key={salaryRangeId} className="filter-list">
           <input
             type="radio"
             id="label1"
             name="Salary Range"
-            value={each.label}
+            value={label}
+            onChange={Click}
             className="inp"
           />
           <label htmlFor="label1">{label}</label>
@@ -59,40 +57,35 @@ const Filter = props => {
   )
 
   const Fdesign = () => {
-    const {profile, load} = props
+    const {profile, profileSearch} = props
     const {Image, name, Bio, Ser} = profile
 
     return (
       <div>
-        {load ? (
-          <div className="Fcard">
-            {profile.length !== 0 ? (
-              <>
-                <div className="profilebg">
-                  <img src={Image} alt={name} />
-                  <h1>{name}</h1>
-                  <p>{Bio}</p>
-                </div>
-              </>
-            ) : (
-              <Button Ser={Ser} />
-            )}
-            <hr />
-            <div>
-              <h1>Type of Employment</h1>
-              {TypeList()}
-            </div>
-            <hr />
-
-            <div>
-              <h1>Salary Range</h1>
-
-              {SearchList()}
-            </div>
+        <div className="Fcard">
+          {profileSearch !== false ? (
+            <>
+              <div className="profilebg">
+                <img src={Image} alt="profile" />
+                <h1>{name}</h1>
+                <p>{Bio}</p>
+              </div>
+            </>
+          ) : (
+            <Button Ser={Ser} />
+          )}
+          <hr />
+          <div>
+            <h1>Type of Employment</h1>
+            <ul>{TypeList()}</ul>
           </div>
-        ) : (
-          Load()
-        )}
+          <hr />
+
+          <div>
+            <h1>Salary Range</h1>
+            <ul> {SearchList()}</ul>
+          </div>
+        </div>
       </div>
     )
   }

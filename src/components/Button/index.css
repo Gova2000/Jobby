@@ -1,0 +1,11 @@
+.btnalign {
+  align-self: center;
+}
+.buttonp {
+  background-color: blue;
+  border: none;
+  color: #fff;
+  height: 30px;
+  padding: 5px;
+  width: 50px;
+}

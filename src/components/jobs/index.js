@@ -8,7 +8,7 @@ import JobCard from '../JobCard'
 import Header from '../Header'
 
 import Filter from '../Filter'
-
+import NoJOb from '../NoJOb'
 import './index.css'
 import Failview from '../failureView'
 
@@ -73,6 +73,7 @@ class Jobs extends Component {
 
   componentDidMount() {
     this.Fetchjob()
+    this.profilefetch()
   }
 
   Fetchjob = async () => {
@@ -108,12 +109,22 @@ class Jobs extends Component {
     } else {
       this.setState({listfetch: true, Status: LoadConst.failure})
     }
+  }
 
+  profilefetch = async () => {
+    const jwtToken = Cookies.get('jwt_token')
+
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
     const profileFetch = await fetch('https://apis.ccbp.in/profile', options)
 
     if (profileFetch.ok) {
       const profileJson = await profileFetch.json()
-      console.log(profileJson.profile_details.profile_image_url)
+
       const profor = {
         Image: profileJson.profile_details.profile_image_url,
         name: profileJson.profile_details.name,
@@ -123,6 +134,10 @@ class Jobs extends Component {
     } else {
       this.setState({profileStatus: true})
     }
+  }
+
+  ProSer = () => {
+    this.profilefetch()
   }
 
   type = type => {
@@ -157,41 +172,15 @@ class Jobs extends Component {
   }
 
   ListSuccess = () => {
-    const {List, profile, load, listfetch, profileStatus} = this.state
+    const {List, profile, load, Status, listfetch, profileStatus} = this.state
 
     return (
       <div className="JCard-bg">
         <Header />
-        <div className="inp1">
-          <div className="inputrow1 ">
-            <input
-              className="input1"
-              type="search"
-              placeholder="search"
-              onChange={this.INPUT}
-            />
-
-            <hr className="hr" />
-            <div className="icon1">
-              <FiSearch onClick={this.Ser} data-testid="searchButton" />
-            </div>
-          </div>
-        </div>
-        <div className="JFC">
-          <Filter
-            TypesList={employmentTypesList}
-            salaryList={salaryRangesList}
-            pakage={this.package}
-            type={this.type}
-            profile={profile}
-            profileStatus={profileStatus}
-            Ser={this.Ser}
-            load={load}
-          />
-
-          <div>
-            <div className="inp">
-              <div className="inputrow ">
+        {List.length !== 0 ? (
+          <>
+            <div className="inp1">
+              <div className="inputrow1 ">
                 <input
                   className="input1"
                   type="search"
@@ -201,22 +190,65 @@ class Jobs extends Component {
 
                 <hr className="hr" />
                 <div className="icon1">
-                  <FiSearch onClick={this.Ser} />
+                  <button
+                    type="button"
+                    onClick={this.Ser}
+                    data-testid="searchButton"
+                  >
+                    <FiSearch />
+                  </button>
                 </div>
               </div>
             </div>
+            <div className="JFC">
+              <Filter
+                TypesList={employmentTypesList}
+                salaryList={salaryRangesList}
+                pakage={this.package}
+                type={this.type}
+                profile={profile}
+                profileStatus={profileStatus}
+                Ser={this.Ser}
+              />
 
-            {List.length === 0 ? (
-              <Failview Ser={this.Ser} />
-            ) : (
-              <ul>
-                {List.map(each => (
-                  <JobCard Details={each} key={each.Id} />
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
+              <div>
+                <div className="inp">
+                  <div className="inputrow ">
+                    <input
+                      className="input1"
+                      type="search"
+                      placeholder="search"
+                      onChange={this.INPUT}
+                    />
+
+                    <hr className="hr" />
+                    <div className="icon1">
+                      <button
+                        type="button"
+                        onClick={this.Ser}
+                        data-testid="searchButton"
+                      >
+                        <FiSearch />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {List.length === 0 ? (
+                  <Failview Ser={this.ProSer} />
+                ) : (
+                  <ul>
+                    {List.map(each => (
+                      <JobCard Details={each} key={each.Id} />
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <NoJOb Ser={this.Ser} />
+        )}
       </div>
     )
   }
@@ -231,6 +263,8 @@ class Jobs extends Component {
     const {Status} = this.state
 
     switch (Status) {
+      case LoadConst.initial:
+        return this.Load1()
       case LoadConst.success:
         return this.ListSuccess()
       case LoadConst.progress:

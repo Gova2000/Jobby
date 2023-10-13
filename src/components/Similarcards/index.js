@@ -1,11 +1,24 @@
+import {MdLocationOn} from 'react-icons/md'
+
+import {FaSuitcase} from 'react-icons/fa'
+import {BsBoxArrowUpRight} from 'react-icons/bs'
+
+import {AiFillStar} from 'react-icons/ai'
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Header from '../Header'
 import Same from '../similar'
+import Failview from '../failureView'
 import './index.css'
 
 class Similar extends Component {
-  state = {Job: {}, Skills: [], SimilarJobs: [], lifeCompany: {}}
+  state = {
+    Job: {},
+    Skills: [],
+    SimilarJobs: [],
+    lifeCompany: {},
+    failJobs: false,
+  }
 
   componentDidMount() {
     this.get()
@@ -67,6 +80,8 @@ class Similar extends Component {
         Job: jobDetails,
         SimilarJobs: SJobs,
       })
+    } else {
+      this.setState({failJobs: true})
     }
   }
 
@@ -81,8 +96,12 @@ class Similar extends Component {
     ))
   }
 
+  Sert = () => {
+    this.get()
+  }
+
   MainCard = () => {
-    const {Job, lifeCompany, SimilarJobs} = this.state
+    const {Job, lifeCompany, SimilarJobs, failJobs} = this.state
 
     const {description2, imageUrl2} = lifeCompany
     const {
@@ -99,60 +118,70 @@ class Similar extends Component {
     return (
       <div>
         <Header />
-        <div className="mg">
-          <div className="maincard1">
-            <div className="card">
-              <img src={companyLogo} alt={title} className="logo" />
-              <div>
-                <h1>{title}</h1>
+        {failJobs !== true ? (
+          <div className="mg">
+            <div className="maincard1">
+              <div className="card">
+                <img src={companyLogo} alt={title} className=" profile" />
                 <div>
-                  <p>{rating}</p>
+                  <h1>{title}</h1>
+                  <div className="row1">
+                    <AiFillStar className="star" />
+                    <p>{rating}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row">
               <div className="row">
-                <div className="row1">
-                  <p>{location}</p>
+                <div className="row">
+                  <div className="row1">
+                    <MdLocationOn className="fill" />
+                    <p>{location}</p>
+                  </div>
+                  <div className="row1">
+                    <FaSuitcase className="fill" />
+                    <p>{employeType}</p>
+                  </div>
                 </div>
-                <div className="row1">
-                  <p>{employeType}</p>
+
+                <div>
+                  <p>{Package}</p>
                 </div>
               </div>
-
+              <hr />
               <div>
-                <p>{Package}</p>
-              </div>
-            </div>
-            <hr />
-            <div>
-              <div>
-                <h1>Description</h1>
-                <a href={companyWebsite}>Visit</a>
-              </div>
+                <div className="row">
+                  <h1>Description</h1>
+                  <div className="row1 anch">
+                    <a href={companyWebsite}>Visit</a>
+                    <BsBoxArrowUpRight />
+                  </div>
+                </div>
 
-              <p>{description}</p>
-            </div>
-            <div>
-              <h1>Skills</h1>
-              <ul className="row2">{this.Skils()}</ul>
-            </div>
-            <div>
-              <h1>Life at Company</h1>
-              <div className="row1">
-                <p className="margin">{description2}</p>
-                <img src={imageUrl2} alt="life-at-company" />
+                <p>{description}</p>
+              </div>
+              <div>
+                <h1>Skills</h1>
+                <ul className="row2">{this.Skils()}</ul>
+              </div>
+              <div>
+                <h1>Life at Company</h1>
+                <div className="row1">
+                  <p className="margin">{description2}</p>
+                  <img src={imageUrl2} alt="life at company" />
+                </div>
               </div>
             </div>
+
+            <h1>Similar Jobs</h1>
+            <ul className="ulcard">
+              {SimilarJobs.map(each => (
+                <Same each={each} key={each.id} />
+              ))}
+            </ul>
           </div>
-
-          <h1>Similar Jobs</h1>
-          <ul className="ulcard">
-            {SimilarJobs.map(each => (
-              <Same each={each} key={each.id} />
-            ))}
-          </ul>
-        </div>
+        ) : (
+          <Failview Ser={this.Sert} />
+        )}
       </div>
     )
   }
